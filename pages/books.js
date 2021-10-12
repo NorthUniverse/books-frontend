@@ -32,31 +32,35 @@ export default function Home() {
     setBook(book);
   };
 
-  const arr = ['a', 'b', 'b'];
-
   return (
     <>
       <HeadTag />
-      <div className={styles.container}>
-        <main className={styles.main}>
-          <h1 className={styles.title}>Welcome to books app</h1>
+      <div className='container'>
+        <main className={styles.main1}>
+          <h1 className='m-5 text-center'>Welcome to books search app</h1>
+          <p className='m-5 text-center'>
+            This App connects to google API in searching for book entered and
+            displays the result
+          </p>
 
-          <form onSubmit={handleSubmit}>
-            <div className='form-group'>
+          <form onSubmit={handleSubmit} className='m-5'>
+            <div className='form-group shadow-lg'>
               <input
                 type='text'
                 onChange={handleChange}
-                className='form-control'
+                className='form-control form-control-lg'
                 placeholder='Search for Books'
                 autoComplete='off'
               />
             </div>
-            <button type='submit' className='btn btn-primary'>
-              Search
-            </button>
+            <div className='d-flex justify-content-center'>
+              <button type='submit' className='btn btn-secondary m-5'>
+                Search
+              </button>
+            </div>
           </form>
 
-          <div className={styles.grid1}>
+          <ul className='list-group list-group-flush'>
             {results ? (
               <>
                 {results.map((searchedBook, index) => {
@@ -64,7 +68,7 @@ export default function Home() {
                 })}
               </>
             ) : null}
-          </div>
+          </ul>
         </main>
       </div>
     </>

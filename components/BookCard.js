@@ -1,11 +1,11 @@
 const BookCard = (props) => {
   return (
-    <div className='book-card'>
+    <li className='list-group-item'>
       <h2>{props.book.title}</h2>
       <p>{props.book.authors}</p>
       <p>{props.book.description}</p>
-      <p>{props.book.infoLink}</p>
-    </div>
+      <a href={props.book.infoLink}>More Info</a>
+    </li>
   );
 };
 
