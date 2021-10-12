@@ -38,7 +38,7 @@ export default function Home() {
       <HeadTag />
       <div className='container'>
         <main className={styles.main1}>
-          <Header/>
+          <Header />
 
           <form onSubmit={handleSubmit} className='m-5'>
             <div className='form-group shadow-lg'>
@@ -66,6 +66,11 @@ export default function Home() {
               </>
             ) : null}
           </ul>
+          {totalItems ? (
+            <>
+              <p>Total search results: {totalItems}</p>
+            </>
+          ) : null}
         </main>
       </div>
     </>
