@@ -1,5 +1,6 @@
 import styles from '../styles/Home.module.css';
 import HeadTag from '../components/HeadTag';
+import Header from '../components/Header';
 import axios from 'axios';
 import { useState } from 'react';
 import BookCard from '../components/BookCard';
@@ -37,13 +38,7 @@ export default function Home() {
       <HeadTag />
       <div className='container'>
         <main className={styles.main1}>
-          <h1 className='m-5 text-center'>
-            Welcome to Dennis's world famous books search app
-          </h1>
-          <p className='m-5 text-center'>
-            This App connects to google API in searching for book entered and
-            displays the result
-          </p>
+          <Header/>
 
           <form onSubmit={handleSubmit} className='m-5'>
             <div className='form-group shadow-lg'>
@@ -66,7 +61,7 @@ export default function Home() {
             {results ? (
               <>
                 {results.map((searchedBook, index) => {
-                  return <BookCard book={searchedBook} />;
+                  return <BookCard book={searchedBook} key={index} />;
                 })}
               </>
             ) : null}

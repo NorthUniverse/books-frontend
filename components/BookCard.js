@@ -6,7 +6,7 @@ const renderAuthors = (authors) => {
       ) : (
         <>
           {authors.map((author, index) => {
-            return <h5>{author}, </h5>;
+            return <h5>{author}</h5>;
           })}
         </>
       )}
