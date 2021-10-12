@@ -17,6 +17,7 @@ const renderAuthors = (authors) => {
 const BookCard = (props) => {
   return (
     <li className='list-group-item p-5'>
+      <img src={props.book.imageUrl} alt='book image' />
       <h2>{props.book.title}</h2>
       {renderAuthors(props.book.authors)}
       <p>{props.book.description}</p>
