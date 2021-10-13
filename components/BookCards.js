@@ -16,7 +16,7 @@ const renderAuthors = (authors) => {
   );
 };
 
-const BookCard = ({ books, loading }) => {
+const BookCards = ({ books, loading }) => {
   if (loading) {
     return <h1>Loading...</h1>;
   } else {
@@ -39,4 +39,4 @@ const BookCard = ({ books, loading }) => {
   }
 };
 
-export default BookCard;
+export default BookCards;

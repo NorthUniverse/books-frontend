@@ -3,7 +3,7 @@ import HeadTag from '../components/HeadTag';
 import Header from '../components/Header';
 import axios from 'axios';
 import React, { useState } from 'react';
-import BookCard from '../components/BookCard';
+import BookCards from '../components/BookCards';
 
 export default function Home() {
   const [book, setBook] = useState('');
@@ -13,7 +13,6 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(book);
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
     setLoading(true);
@@ -22,7 +21,6 @@ export default function Home() {
         searchQuery: book,
       },
     });
-    // console.log(res.data);
     setResults(res.data.searchedBooks);
     setTotalItems(res.data.totalItems);
     setLoading(false);
@@ -57,7 +55,7 @@ export default function Home() {
             </div>
           </form>
 
-          {results ? <BookCard books={results} loading={loading} /> : null}
+          {results ? <BookCards books={results} loading={loading} /> : null}
 
           {totalItems && !loading ? (
             <>
