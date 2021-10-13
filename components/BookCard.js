@@ -16,7 +16,7 @@ const renderAuthors = (authors) => {
 
 const BookCard = (props) => {
   return (
-    <li className='list-group-item p-5'>
+    <li className='list-group-item p-5' key={props.book.id}>
       <h2>{props.book.title}</h2>
       {renderAuthors(props.book.authors)}
       <p>{props.book.description}</p>

@@ -2,7 +2,7 @@ import styles from '../styles/Home.module.css';
 import HeadTag from '../components/HeadTag';
 import Header from '../components/Header';
 import axios from 'axios';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import BookCard from '../components/BookCard';
 
 export default function Home() {
@@ -10,22 +10,19 @@ export default function Home() {
   const [results, setResults] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(book);
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
-    axios
-      .get(`${DOMAIN}${PATH}`, {
-        params: {
-          searchQuery: book,
-        },
-      })
-      .then((res) => {
-        console.log(res.data);
-        setResults(res.data.searchedBooks);
-        setTotalItems(res.data.totalItems);
-      });
+    const res = await axios.get(`${DOMAIN}${PATH}`, {
+      params: {
+        searchQuery: book,
+      },
+    });
+    console.log(res.data);
+    setResults(res.data.searchedBooks);
+    setTotalItems(res.data.totalItems);
   };
 
   const handleChange = (event) => {
@@ -58,13 +55,11 @@ export default function Home() {
           </form>
 
           <ul className='list-group list-group-flush'>
-            {results ? (
-              <>
-                {results.map((searchedBook, index) => {
+            {results
+              ? results.map((searchedBook, index) => {
                   return <BookCard book={searchedBook} key={index} />;
-                })}
-              </>
-            ) : null}
+                })
+              : null}
           </ul>
           {totalItems ? (
             <>
