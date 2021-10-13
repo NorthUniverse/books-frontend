@@ -2,17 +2,15 @@ const renderAuthors = (authors) => {
   return (
     <>
       {authors ? (
-        <>
-          <ul>
-            {authors.map((author, index) => {
-              return (
-                <li className='m-3' key={index}>
-                  {author}
-                </li>
-              );
-            })}
-          </ul>
-        </>
+        <ul>
+          {authors.map((author, index) => {
+            return (
+              <li className='m-3' key={index}>
+                {author}
+              </li>
+            );
+          })}
+        </ul>
       ) : null}
     </>
   );
