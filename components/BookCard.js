@@ -18,17 +18,27 @@ const renderAuthors = (authors) => {
   );
 };
 
-const BookCard = (props) => {
-  return (
-    <li className='list-group-item p-5' key={props.book.id}>
-      <h2>{props.book.title}</h2>
-      {renderAuthors(props.book.authors)}
-      <p>{props.book.description}</p>
-      <a href={props.book.infoLink} className='text-primary' target='_blank'>
-        Info Link
-      </a>
-    </li>
-  );
+const BookCard = ({ books, loading }) => {
+  if (loading) {
+    return <h1>Loading...</h1>;
+  } else {
+    return (
+      <ul className='list-group list-group-flush'>
+        {books.map((book, index) => {
+          return (
+            <li className='list-group-item p-5' key={index}>
+              <h2>{book.title}</h2>
+              {renderAuthors(book.authors)}
+              <p>{book.description}</p>
+              <a href={book.infoLink} className='text-primary' target='_blank'>
+                Info Link
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
 };
 
 export default BookCard;

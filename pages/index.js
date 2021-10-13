@@ -7,22 +7,25 @@ import BookCard from '../components/BookCard';
 
 export default function Home() {
   const [book, setBook] = useState('');
+  const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(book);
+    // console.log(book);
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
+    setLoading(true);
     const res = await axios.get(`${DOMAIN}${PATH}`, {
       params: {
         searchQuery: book,
       },
     });
-    console.log(res.data);
+    // console.log(res.data);
     setResults(res.data.searchedBooks);
     setTotalItems(res.data.totalItems);
+    setLoading(false);
   };
 
   const handleChange = (event) => {
@@ -54,16 +57,11 @@ export default function Home() {
             </div>
           </form>
 
-          <ul className='list-group list-group-flush'>
-            {results
-              ? results.map((searchedBook, index) => {
-                  return <BookCard book={searchedBook} key={index} />;
-                })
-              : null}
-          </ul>
-          {totalItems ? (
+          {results ? <BookCard books={results} loading={loading} /> : null}
+
+          {totalItems && !loading ? (
             <>
-              <p>Total search results: {totalItems}</p>
+              <p className='display-6'>Total search results: {totalItems}</p>
             </>
           ) : null}
         </main>
@@ -71,3 +69,7 @@ export default function Home() {
     </>
   );
 }
+
+// results.map((searchedBook, index) => {
+//   return <BookCard book={searchedBook} key={index} />;
+// })
