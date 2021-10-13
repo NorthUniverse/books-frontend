@@ -5,7 +5,11 @@ const renderAuthors = (authors) => {
         <>
           <ul>
             {authors.map((author, index) => {
-              return <li className='m-3'>{author}</li>;
+              return (
+                <li className='m-3' key={index}>
+                  {author}
+                </li>
+              );
             })}
           </ul>
         </>
