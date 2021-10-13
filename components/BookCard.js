@@ -1,15 +1,15 @@
 const renderAuthors = (authors) => {
   return (
     <>
-      {authors.length === 1 ? (
-        <h5>{authors}</h5>
-      ) : (
+      {authors ? (
         <>
-          {authors.map((author, index) => {
-            return <h5>{author}</h5>;
-          })}
+          <ul>
+            {authors.map((author, index) => {
+              return <li className='m-3'>{author}</li>;
+            })}
+          </ul>
         </>
-      )}
+      ) : null}
     </>
   );
 };
@@ -20,8 +20,8 @@ const BookCard = (props) => {
       <h2>{props.book.title}</h2>
       {renderAuthors(props.book.authors)}
       <p>{props.book.description}</p>
-      <a href={props.book.infoLink} target='_blank'>
-        More Info
+      <a href={props.book.infoLink} className='text-primary' target='_blank'>
+        Info Link
       </a>
     </li>
   );
