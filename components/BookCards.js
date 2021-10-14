@@ -22,7 +22,7 @@ const BookCards = ({ books, isLoading }) => {
     return (
       <div className='row'>
         <div className='spinner-border col-md-8 mx-auto' role='status'>
-          <span class='visually-hidden'>Loading...</span>
+          <span className='visually-hidden'>Loading...</span>
         </div>
       </div>
     );
