@@ -1,6 +1,6 @@
 import Link from 'next/Link';
 
-const Pagination = ({ startIndex, totalItems, isLoading, paginate }) => {
+const Pagination = ({ totalItems, isLoading, paginate }) => {
   const pagenumbers = [];
 
   for (let i = 1; i <= totalItems / 10; i++) {
@@ -11,7 +11,6 @@ const Pagination = ({ startIndex, totalItems, isLoading, paginate }) => {
   }
 
   if (isLoading) {
-    console.log(isLoading);
     return null;
   } else {
     return (
@@ -19,13 +18,12 @@ const Pagination = ({ startIndex, totalItems, isLoading, paginate }) => {
         <ul className='pagination justify-content-center m-5'>
           {pagenumbers.map((number) => (
             <li key={number} className='page-item'>
-              <Link
+              <div
                 onClick={() => paginate(number)}
-                href='/'
                 className='page-link'
               >
                 {number}
-              </Link>
+              </div>
             </li>
           ))}
         </ul>

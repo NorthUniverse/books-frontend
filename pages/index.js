@@ -13,21 +13,9 @@ export default function Home() {
   const [totalItems, setTotalItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleSubmit = async (event, number = 1) => {
-    setCurrentPage(number);
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const DOMAIN = 'http://localhost:8000/';
-    const PATH = 'books/search';
-    setIsLoading(true);
-    const res = await axios.get(`${DOMAIN}${PATH}`, {
-      params: {
-        searchQuery: book,
-        startIndex: (number*10)-2
-      },
-    });
-    setResults(res.data.searchedBooks);
-    setTotalItems(res.data.totalItems);
-    setIsLoading(false);
+    getResults(1);
   };
 
   const handleChange = (event) => {
@@ -35,10 +23,25 @@ export default function Home() {
     setBook(book);
   };
 
-  // const paginate = (number) => {
-  //   const book = event.target.value;
-  //   setBook(book);
-  // };
+  const paginate = (number) => {
+    getResults(number);
+  };
+
+  const getResults = async (number) => {
+    setCurrentPage(number);
+    const DOMAIN = 'http://localhost:8000/';
+    const PATH = 'books/search';
+    setIsLoading(true);
+    const res = await axios.get(`${DOMAIN}${PATH}`, {
+      params: {
+        searchQuery: book,
+        startIndex: number * 10 - 2,
+      },
+    });
+    setResults(res.data.searchedBooks);
+    setTotalItems(res.data.totalItems);
+    setIsLoading(false);
+  };
 
   return (
     <>
@@ -64,19 +67,14 @@ export default function Home() {
             </div>
           </form>
 
-          {results ? <BookCards books={results} isLoading={isLoading} paginate={handleSubmit} /> : null}
+          {results ? <BookCards books={results} isLoading={isLoading} /> : null}
 
           <Pagination
-            startIndex={currentPage}
             totalItems={totalItems}
             isLoading={isLoading}
+            paginate={paginate}
           />
 
-
-
-
-
-          
           {totalItems && !isLoading ? (
             <>
               <p className='display-6 text-center'>
@@ -89,7 +87,3 @@ export default function Home() {
     </>
   );
 }
-
-// results.map((searchedBook, index) => {
-//   return <BookCard book={searchedBook} key={index} />;
-// })
