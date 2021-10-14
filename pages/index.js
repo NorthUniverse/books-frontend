@@ -4,32 +4,41 @@ import Header from '../components/Header';
 import axios from 'axios';
 import React, { useState } from 'react';
 import BookCards from '../components/BookCards';
+import Pagination from '../components/Pagination';
 
 export default function Home() {
   const [book, setBook] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, number = 1) => {
+    setCurrentPage(number);
     event.preventDefault();
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
-    setLoading(true);
+    setIsLoading(true);
     const res = await axios.get(`${DOMAIN}${PATH}`, {
       params: {
         searchQuery: book,
+        startIndex: (number*10)-2
       },
     });
     setResults(res.data.searchedBooks);
     setTotalItems(res.data.totalItems);
-    setLoading(false);
+    setIsLoading(false);
   };
 
   const handleChange = (event) => {
     const book = event.target.value;
     setBook(book);
   };
+
+  // const paginate = (number) => {
+  //   const book = event.target.value;
+  //   setBook(book);
+  // };
 
   return (
     <>
@@ -55,11 +64,24 @@ export default function Home() {
             </div>
           </form>
 
-          {results ? <BookCards books={results} loading={loading} /> : null}
+          {results ? <BookCards books={results} isLoading={isLoading} paginate={handleSubmit} /> : null}
 
-          {totalItems && !loading ? (
+          <Pagination
+            startIndex={currentPage}
+            totalItems={totalItems}
+            isLoading={isLoading}
+          />
+
+
+
+
+
+          
+          {totalItems && !isLoading ? (
             <>
-              <p className='display-6'>Total search results: {totalItems}</p>
+              <p className='display-6 text-center'>
+                Total search results: {totalItems}
+              </p>
             </>
           ) : null}
         </main>

@@ -16,9 +16,16 @@ const renderAuthors = (authors) => {
   );
 };
 
-const BookCards = ({ books, loading }) => {
-  if (loading) {
-    return <h1>Loading...</h1>;
+const BookCards = ({ books, isLoading }) => {
+  console.log(Math.ceil(16 / 10));
+  if (isLoading) {
+    return (
+      <div className='row'>
+        <div className='spinner-border col-md-8 mx-auto' role='status'>
+          <span class='visually-hidden'>Loading...</span>
+        </div>
+      </div>
+    );
   } else {
     return (
       <ul className='list-group list-group-flush'>
