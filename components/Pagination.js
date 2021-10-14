@@ -13,7 +13,7 @@ const Pagination = ({ totalItems, isLoading, paginate, currentPage }) => {
   } else {
     return (
       <nav>
-        <ul className='pagination pagination-lg justify-content-center m-5'>
+        <ul className='pagination justify-content-center m-5'>
           {pagenumbers.map((number) => (
             <li
               key={number}
