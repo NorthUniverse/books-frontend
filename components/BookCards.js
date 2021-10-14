@@ -17,7 +17,6 @@ const renderAuthors = (authors) => {
 };
 
 const BookCards = ({ books, isLoading }) => {
-  console.log(Math.ceil(16 / 10));
   if (isLoading) {
     return (
       <div className='row'>

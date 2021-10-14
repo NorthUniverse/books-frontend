@@ -73,15 +73,17 @@ export default function Home() {
             totalItems={totalItems}
             isLoading={isLoading}
             paginate={paginate}
+            currentPage={currentPage}
           />
 
+          {/* api returns different totalItems
           {totalItems && !isLoading ? (
             <>
               <p className='display-6 text-center'>
                 Total search results: {totalItems}
               </p>
             </>
-          ) : null}
+          ) : null} */}
         </main>
       </div>
     </>
