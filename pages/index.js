@@ -5,6 +5,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import BookCards from '../components/BookCards';
 import Pagination from '../components/Pagination';
+import { Alert } from 'reactstrap';
 
 export default function Home() {
   const [book, setBook] = useState('');
@@ -12,6 +13,8 @@ export default function Home() {
   const [results, setResults] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [displayError, setDisplayError] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,19 +31,26 @@ export default function Home() {
   };
 
   const getResults = async (number) => {
+    setIsSubmit(false);
     setCurrentPage(number);
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
-    setIsLoading(true);
-    const res = await axios.get(`${DOMAIN}${PATH}`, {
-      params: {
-        searchQuery: book,
-        startIndex: number * 10 - 2,
-      },
-    });
-    setResults(res.data.searchedBooks);
-    setTotalItems(res.data.totalItems);
-    setIsLoading(false);
+    if (!book) {
+      console.log('gotcha');
+      setDisplayError(true);
+    } else {
+      setIsSubmit(true);
+      setIsLoading(true);
+      const res = await axios.get(`${DOMAIN}${PATH}`, {
+        params: {
+          searchQuery: book,
+          startIndex: number * 10 - 10,
+        },
+      });
+      setResults(res.data.searchedBooks);
+      setTotalItems(res.data.totalItems);
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -67,7 +77,17 @@ export default function Home() {
             </div>
           </form>
 
+          {displayError ? (
+            <Alert className='d-flex justify-content-center'>
+              Search bar empty
+            </Alert>
+          ) : null}
+
           {results ? <BookCards books={results} isLoading={isLoading} /> : null}
+
+          {results.length === 0 && isSubmit ? (
+            <p className='display-6 text-center'>No Search Results</p>
+          ) : null}
 
           <Pagination
             totalItems={totalItems}
