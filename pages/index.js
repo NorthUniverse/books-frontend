@@ -32,6 +32,7 @@ export default function Home() {
 
   const getResults = async (number) => {
     setIsSubmit(false);
+    setDisplayError(false);
     setCurrentPage(number);
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
@@ -78,7 +79,7 @@ export default function Home() {
           </form>
 
           {displayError ? (
-            <Alert className='d-flex justify-content-center'>
+            <Alert className='d-flex justify-content-center alert-danger'>
               Search bar empty
             </Alert>
           ) : null}
