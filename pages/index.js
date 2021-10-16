@@ -65,7 +65,7 @@ export default function Home() {
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
     //secretKey must be stored as an environment variable, hard coding it for now
-    const secretMessage = 'purpleHippo1';
+    const secretMessage = 'purpleHippo';
 
     if (!book) {
       setDisplayError(true);
@@ -90,8 +90,7 @@ export default function Home() {
         setIsSubmit(false);
         setIsLoading(false);
         setApiError(true);
-      }
-      else if (!isAuth) {
+      } else if (!isAuth) {
         setIsSubmit(false);
         setIsLoading(false);
         setNoAuthDisplay(true);
@@ -136,7 +135,7 @@ export default function Home() {
 
           {results ? <BookCards books={results} isLoading={isLoading} /> : null}
 
-          {results.length === 0 && isSubmit ? (
+          {results.length === 0 && isSubmit && !isLoading ? (
             <p className='display-6 text-center'>No Search Results</p>
           ) : null}
 
@@ -165,6 +164,8 @@ export default function Home() {
               </p>
             </>
           ) : null} */}
+
+          {/* Another know issue https://github.com/reactstrap/reactstrap/issues/1340 */}
         </main>
       </div>
     </>
