@@ -37,7 +37,6 @@ export default function Home() {
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
     if (!book) {
-      console.log('gotcha');
       setDisplayError(true);
     } else {
       setIsSubmit(true);
@@ -52,6 +51,10 @@ export default function Home() {
       setTotalItems(res.data.totalItems);
       setIsLoading(false);
     }
+  };
+
+  const toggleAlert = () => {
+    setDisplayError(!displayError);
   };
 
   return (
@@ -78,11 +81,12 @@ export default function Home() {
             </div>
           </form>
 
-          {displayError ? (
-            <Alert className='d-flex justify-content-center alert-danger'>
-              Search bar empty
-            </Alert>
-          ) : null}
+          <Alert
+            className='d-flex justify-content-center alert-danger'
+            isOpen={displayError}
+          >
+            Please enter book title to search.
+          </Alert>
 
           {results ? <BookCards books={results} isLoading={isLoading} /> : null}
 

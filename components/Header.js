@@ -5,7 +5,7 @@ const Header = () => {
           Welcome to books search app
         </h1>
         <p className='m-5 text-center'>
-          This App connects to google API and serached for book entered and
+          This App connects to google API and searches for book title entered and
           displays the results
         </p>
       </>
