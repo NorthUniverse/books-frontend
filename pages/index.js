@@ -15,6 +15,7 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [displayError, setDisplayError] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [apiError, setApiError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,6 +32,7 @@ export default function Home() {
   };
 
   const getResults = async (number) => {
+    setApiError(false);
     setIsSubmit(false);
     setDisplayError(false);
     setCurrentPage(number);
@@ -41,20 +43,29 @@ export default function Home() {
     } else {
       setIsSubmit(true);
       setIsLoading(true);
-      const res = await axios.get(`${DOMAIN}${PATH}`, {
-        params: {
-          searchQuery: book,
-          startIndex: number * 10 - 10,
-        },
-      });
-      setResults(res.data.searchedBooks);
-      setTotalItems(res.data.totalItems);
-      setIsLoading(false);
-    }
-  };
+      const res = await axios
+        .get(`${DOMAIN}${PATH}`, {
+          params: {
+            searchQuery: book,
+            startIndex: number * 10 - 10,
+            //key must be stored as an env variable, using it as is for now
+            // key: btoa('books')
+          },
+        })
+        .catch((e) => {
+          return e;
+        });
 
-  const toggleAlert = () => {
-    setDisplayError(!displayError);
+      if (!res.toString().includes('Error')) {
+        setResults(res.data.searchedBooks);
+        setTotalItems(res.data.totalItems);
+        setIsLoading(false);
+      } else {
+        setIsSubmit(false);
+        setIsLoading(false);
+        setApiError(true);
+      }
+    }
   };
 
   return (
@@ -92,6 +103,10 @@ export default function Home() {
 
           {results.length === 0 && isSubmit ? (
             <p className='display-6 text-center'>No Search Results</p>
+          ) : null}
+
+          {apiError ? (
+            <p className='display-6 text-center'>Api Error, please try again later</p>
           ) : null}
 
           <Pagination
