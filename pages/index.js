@@ -16,6 +16,7 @@ export default function Home() {
   const [displayError, setDisplayError] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [apiError, setApiError] = useState(false);
+  const [noAuthDisplay, setNoAuthDisplay] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,6 +32,31 @@ export default function Home() {
     getResults(number);
   };
 
+  // https://www.geeksforgeeks.org/node-js-crypto-createdecipheriv-method/
+  const encryptData = (secretMessage) => {
+    // Includes crypto module
+    const crypto = require('crypto');
+    // Difining algorithm
+    const algorithm = 'aes-256-cbc';
+    // Defining key
+    const key = crypto.randomBytes(32);
+    // Defining iv
+    const iv = crypto.randomBytes(16);
+    // An encrypt function
+    let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+    // Updating secretMessage
+    let encrypted = cipher.update(secretMessage);
+    // Using concatenation
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    // Returning algorithm, key, iv and encrypted data
+    return {
+      algorithm,
+      key,
+      iv: iv.toString('hex'),
+      encryptedData: encrypted.toString('hex'),
+    };
+  };
+
   const getResults = async (number) => {
     setApiError(false);
     setIsSubmit(false);
@@ -38,6 +64,9 @@ export default function Home() {
     setCurrentPage(number);
     const DOMAIN = 'http://localhost:8000/';
     const PATH = 'books/search';
+    //secretKey must be stored as an environment variable, hard coding it for now
+    const secretMessage = 'purpleHippo1';
+
     if (!book) {
       setDisplayError(true);
     } else {
@@ -48,22 +77,28 @@ export default function Home() {
           params: {
             searchQuery: book,
             startIndex: number * 10 - 10,
-            //key must be stored as an env variable, using it as is for now
-            // key: btoa('books')
+            encryptedData: encryptData(secretMessage),
           },
         })
         .catch((e) => {
           return e;
         });
 
-      if (!res.toString().includes('Error')) {
-        setResults(res.data.searchedBooks);
-        setTotalItems(res.data.totalItems);
-        setIsLoading(false);
-      } else {
+      const isError = res.toString().includes('Error');
+      const isAuth = res.data.auth;
+      if (isError) {
         setIsSubmit(false);
         setIsLoading(false);
         setApiError(true);
+      }
+      else if (!isAuth) {
+        setIsSubmit(false);
+        setIsLoading(false);
+        setNoAuthDisplay(true);
+      } else {
+        setResults(res.data.searchedBooks);
+        setTotalItems(res.data.totalItems);
+        setIsLoading(false);
       }
     }
   };
@@ -106,7 +141,13 @@ export default function Home() {
           ) : null}
 
           {apiError ? (
-            <p className='display-6 text-center'>Api Error, please try again later</p>
+            <p className='display-6 text-center'>
+              Api Error, please try again later
+            </p>
+          ) : null}
+
+          {noAuthDisplay ? (
+            <p className='display-6 text-center'>Not Authorized</p>
           ) : null}
 
           <Pagination
