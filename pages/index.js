@@ -102,18 +102,20 @@ export default function Home() {
       setTotalItems(res.data.totalItems);
       setIsLoading(false);
     }
-  }
+  };
 
   const setInitStates = (number) => {
     setApiError(false);
     setIsSubmit(false);
     setDisplayError(false);
     setCurrentPage(number);
-  }
+  };
 
   const getError = (res) => {
-    return res.toString().includes('Error') || res.toString().includes('TypeError');
-  }
+    return (
+      res.toString().includes('Error') || res.toString().includes('TypeError')
+    );
+  };
 
   const getAuth = (res) => {
     try {
@@ -122,8 +124,7 @@ export default function Home() {
       console.log(e);
       return false;
     }
-  }
-
+  };
 
   return (
     <>
