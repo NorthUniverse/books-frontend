@@ -154,7 +154,7 @@ export default function Home() {
             className='d-flex justify-content-center alert-danger'
             isOpen={displayError}
           >
-            Please enter book title to search.
+            Please enter text to search.
           </Alert>
 
           {results ? <BookCards books={results} isLoading={isLoading} /> : null}
