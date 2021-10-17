@@ -78,6 +78,7 @@ export default function Home() {
             startIndex: number * 10 - 10,
             encryptedData: encryptData(secretMessage),
           },
+          headers: { 'Access-Control-Allow-Origin': '*' },
         })
         .catch((e) => {
           return e;
