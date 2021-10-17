@@ -60,8 +60,9 @@ export default function Home() {
   const getResults = async (number) => {
     setInitStates(number);
 
-    const DOMAIN = 'https://books-api.northuniverse.repl.co/';
-    const PATH = 'books/search';
+    // const DOMAIN = 'https://books-api.northuniverse.repl.co';
+    const DOMAIN = 'http://52.202.219.117';
+    const PATH = '/books/search';
     //secretKey must be stored as an environment variable, hard coding it for now
     const secretMessage = 'purpleHippo';
 
