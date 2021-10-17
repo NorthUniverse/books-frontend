@@ -61,7 +61,7 @@ export default function Home() {
     setInitStates(number);
 
     // const DOMAIN = 'https://books-api.northuniverse.repl.co';
-    const DOMAIN = 'http://52.202.219.117';
+    const DOMAIN = 'http://3.82.199.46';
     const PATH = '/books/search';
     //secretKey must be stored as an environment variable, hard coding it for now
     const secretMessage = 'purpleHippo';
