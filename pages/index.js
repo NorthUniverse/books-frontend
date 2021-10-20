@@ -58,12 +58,11 @@ export default function Home() {
   };
 
   const getResults = async (number) => {
-    setApiError(false);
-    setIsSubmit(false);
-    setDisplayError(false);
-    setCurrentPage(number);
-    const DOMAIN = 'http://localhost:8000/';
-    const PATH = 'books/search';
+    setInitStates(number);
+
+    const DOMAIN = 'https://books-api.northuniverse.repl.co';
+    // const DOMAIN = 'http://3.82.199.46';
+    const PATH = '/books/search';
     //secretKey must be stored as an environment variable, hard coding it for now
     const secretMessage = 'purpleHippo';
 
@@ -79,26 +78,56 @@ export default function Home() {
             startIndex: number * 10 - 10,
             encryptedData: encryptData(secretMessage),
           },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+          },
         })
         .catch((e) => {
           return e;
         });
 
-      const isError = res.toString().includes('Error');
-      const isAuth = res.data.auth;
-      if (isError) {
-        setIsSubmit(false);
-        setIsLoading(false);
-        setApiError(true);
-      } else if (!isAuth) {
-        setIsSubmit(false);
-        setIsLoading(false);
-        setNoAuthDisplay(true);
-      } else {
-        setResults(res.data.searchedBooks);
-        setTotalItems(res.data.totalItems);
-        setIsLoading(false);
-      }
+      const isError = getError(res);
+      let isAuth = getAuth(res);
+      setErrorAuthStates(res, isError, isAuth);
+    }
+  };
+
+  const setErrorAuthStates = (res, isError, isAuth) => {
+    if (isError) {
+      setIsSubmit(false);
+      setIsLoading(false);
+      setApiError(true);
+    } else if (!isAuth) {
+      setIsSubmit(false);
+      setIsLoading(false);
+      setNoAuthDisplay(true);
+    } else {
+      setResults(res.data.searchedBooks);
+      setTotalItems(res.data.totalItems);
+      setIsLoading(false);
+    }
+  };
+
+  const setInitStates = (number) => {
+    setApiError(false);
+    setIsSubmit(false);
+    setDisplayError(false);
+    setCurrentPage(number);
+  };
+
+  const getError = (res) => {
+    return (
+      res.toString().includes('Error') || res.toString().includes('TypeError')
+    );
+  };
+
+  const getAuth = (res) => {
+    try {
+      return res.data.auth;
+    } catch (e) {
+      console.log(e);
+      return false;
     }
   };
 
@@ -130,7 +159,7 @@ export default function Home() {
             className='d-flex justify-content-center alert-danger'
             isOpen={displayError}
           >
-            Please enter book title to search.
+            Please enter text to search.
           </Alert>
 
           {results ? <BookCards books={results} isLoading={isLoading} /> : null}
@@ -141,7 +170,7 @@ export default function Home() {
 
           {apiError ? (
             <p className='display-6 text-center'>
-              Api Error, please try again later
+              An error occurred, please try again later
             </p>
           ) : null}
 
