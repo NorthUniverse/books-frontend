@@ -34,7 +34,7 @@ const BookCards = ({ books, isLoading }) => {
               <h2>{book.title}</h2>
               {renderAuthors(book.authors)}
               <p>{book.description}</p>
-              <a href={book.infoLink} className='text-primary' target='_blank'>
+              <a href={book.infoLink} className='text-primary' target='_blank' rel="noreferrer">
                 Info Link
               </a>
             </li>
